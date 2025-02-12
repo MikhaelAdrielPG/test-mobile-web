@@ -20,10 +20,9 @@ import org.junit.After
 import org.openqa.selenium.Keys as Keys
 import helpers.GlobalHelper
 import pages.LoginPageWeb
-import pages.AdminPageWebsite
+import helpers.Constants as Const
 
 LoginPageWeb loginPage = new LoginPageWeb()
-AdminPageWebsite adminPage = new AdminPageWebsite()
 
 'Step 1: Open Browser and Navigate to App URL'
 GlobalHelper.openBrowser(GlobalVariable.AppUrl)
@@ -35,10 +34,10 @@ loginPage.login(GlobalVariable.UsernameWeb, GlobalVariable.PasswordWeb)
 loginPage.verifyLoginSuccess()
 
 'Step 4: Navigate to Admin Page'
-adminPage.navigateToAdminMenu()
+loginPage.navigateToAdminMenu()
 
 'Step 5: Load Test Data & Fill the Form'
-adminPage.fillAdminForm("TC_001")
+loginPage.fillAdminFormJSON(Const.TC001)
 
 'Step 6 : Close Browser'
 GlobalHelper.closeBrowser()

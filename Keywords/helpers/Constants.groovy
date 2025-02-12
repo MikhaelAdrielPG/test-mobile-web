@@ -1,4 +1,4 @@
-package locators
+package helpers
 
 import static com.kms.katalon.core.checkpoint.CheckpointFactory.findCheckpoint
 import static com.kms.katalon.core.testcase.TestCaseFactory.findTestCase
@@ -20,17 +20,12 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 
 import internal.GlobalVariable
 
-public class LoginPageLocator {
-
-	// Web Login XPaths
-	public static final String USERNAME_INPUT_WEB = "//input[@name='username']"
-	public static final String PASSWORD_INPUT_WEB = "//input[@name='password']"
-	public static final String LOGIN_BUTTON_WEB = "//button[contains(@class,'oxd-button')]"
-	public static final String DASHBOARD_WEB = "//*[@id='app']/div[1]/div[1]/header/div[1]/div[1]/span/h6"
-
-	// Mobile Login XPaths
-	public static final String USERNAME_INPUT_MOBILE = "//*[@class='android.widget.EditText' and (@text='Username' or .='Username')]"
-	public static final String PASSWORD_INPUT_MOBILE = "//*[@class='android.widget.EditText' and (@text='Password' or .='Password')]"
-	public static final String LOGIN_BUTTON_MOBILE = "//*[@class='android.widget.TextView' and (@text='LOGIN' or .='LOGIN')]"
-	public static final String DASHBOARD_MOBILE = "//*[@class='android.widget.TextView' and (@text='PRODUCTS' or .='PRODUCTS')]"
+public class Constants {
+	def static final String TC001 = "TC_001"
+	def static final String TC002 = "TC_002"
+	def static final String S001 = "S_001"
+	def static final String S002 = "S_002"
+	def static final String S003 = "S_003"
+	def static final String S004 = "S_004"
+	def static final String FINISH_BUTTON = "FINISH"
 }

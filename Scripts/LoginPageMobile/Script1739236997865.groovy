@@ -18,6 +18,7 @@ import internal.GlobalVariable as GlobalVariable
 import org.openqa.selenium.Keys as Keys
 import helpers.GlobalHelper
 import pages.LoginPageMobile
+import helpers.Constants as Const
 
 LoginPageMobile loginPage = new LoginPageMobile()
 
@@ -31,7 +32,7 @@ loginPage.login(GlobalVariable.UsernameMobile, GlobalVariable.PasswordMobile)
 loginPage.verifyLoginSuccess()
 
 'Step 4 : Checkout'
-loginPage.checkout("mike", "apg", "40255")
+loginPage.checkoutJSON(Const.S002)
 
 'Step 4 : Close App'
 GlobalHelper.closeApp()

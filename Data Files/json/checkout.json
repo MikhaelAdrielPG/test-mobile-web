@@ -1,0 +1,26 @@
+[
+    {
+        "ScenarioId": "S_001",
+        "FirstName": "John",
+        "LastName": "Doe",
+        "PostalCode": "12345"
+    },
+    {
+        "ScenarioId": "S_002",
+        "FirstName": "Jane",
+        "LastName": "Doe",
+        "PostalCode": "54321"
+    },
+    {
+        "ScenarioId": "S_003",
+        "FirstName": "Mike",
+        "LastName": "Ross",
+        "PostalCode": "67890"
+    },
+    {
+        "ScenarioId": "S_004",
+        "FirstName": "Sarah",
+        "LastName": "Connor",
+        "PostalCode": "9876"
+    }
+]

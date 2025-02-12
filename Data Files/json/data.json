@@ -1,0 +1,16 @@
+[
+  {
+    "ScenarioId": "TC_002",
+    "Username": "Admin",
+    "UserRole": "Admin",
+    "EmployeeName": "Admin Admin Admin",
+    "Status": "Enabled"
+  },
+  {
+    "ScenarioId": "TC_001",
+    "Username": "FML",
+    "UserRole": "ESS",
+    "EmployeeName": "Qwerty",
+    "Status": "Enabled"
+  }
+]
