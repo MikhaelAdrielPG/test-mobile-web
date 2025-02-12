@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TestCaseEntity>
+   <description></description>
+   <name>LoginPageWeb</name>
+   <tag></tag>
+   <comment></comment>
+   <recordOption>OTHER</recordOption>
+   <testCaseGuid>e93e3a11-1eaf-40a4-b6aa-ddf24ad59c0a</testCaseGuid>
+</TestCaseEntity>
