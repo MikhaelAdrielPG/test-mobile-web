@@ -28,23 +28,24 @@ import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 
 import groovy.json.JsonSlurper
-import helpers.GlobalHelper as Helper
 import helpers.Constants as Const
 import locators.LoginPageMobileLocator as Locator
+import helpers.GlobalHelper as Helper
 
 import internal.GlobalVariable
 
-public class LoginPageMobile {
+public class LoginPageMobile extends BasePage {
+
 	@Keyword
-	public void login(String username, String password) {
-		Mobile.setText(Helper.findByXPath(Locator.usernameXPath), username, 10)
-		Mobile.setText(Helper.findByXPath(Locator.passwordXPath), password, 10)
-		Mobile.tap(Helper.findByXPath(Locator.loginButtonXPath), 10)
+	def public void login(String username, String password) {
+		Mobile.setText(findByXPath(Locator.usernameXPath), username, 10)
+		Mobile.setText(findByXPath(Locator.passwordXPath), password, 10)
+		Mobile.tap(findByXPath(Locator.loginButtonXPath), 10)
 	}
 
 	@Keyword
-	public void verifyElementPresentByXPath(String xpath, int timeout) {
-		boolean isPresent = Mobile.verifyElementExist(Helper.findByXPath(xpath), timeout)
+	def public void verifyElementPresentByXPath(String xpath, int timeout) {
+		boolean isPresent = Mobile.verifyElementExist(findByXPath(xpath), timeout)
 
 		if (isPresent) {
 			KeywordUtil.logInfo("Element found: " + xpath)
@@ -54,15 +55,14 @@ public class LoginPageMobile {
 	}
 
 	@Keyword
-	public void verifyLoginSuccess() {
+	def public void verifyLoginSuccess() {
 		verifyElementPresentByXPath(Locator.dashboardXPath, 10)
 	}
 
 	@Keyword
-	public void checkoutXLS(String scenarioId) {
+	def public void checkoutXLS(String scenarioId, String testDataPath, String sheet) {
 		try {
-			def testDataPath = "Data Files/xls/data.xlsx"
-			ExcelData testData = ExcelFactory.getExcelDataWithDefaultSheet(testDataPath, "Sheet2", true)
+			ExcelData testData = ExcelFactory.getExcelDataWithDefaultSheet(testDataPath, sheet, true)
 
 			int rowIndex = -1
 			for (int i = 1; i <= testData.getRowNumbers(); i++) {
@@ -79,16 +79,16 @@ public class LoginPageMobile {
 
 				KeywordUtil.logInfo("Performing checkout with data: ${scenarioId}, ${firstName}, ${lastName}, ${postalCode}")
 
-				Mobile.tap(Helper.findByXPath(Locator.addToChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnCheckout), 3)
-				Mobile.setText(Helper.findByXPath(Locator.txtFirstName), firstName, 1)
-				Mobile.setText(Helper.findByXPath(Locator.txtLastName), lastName, 1)
-				Mobile.setText(Helper.findByXPath(Locator.txtZip), postalCode, 1)
+				Mobile.tap(findByXPath(Locator.addToChart), 3)
+				Mobile.tap(findByXPath(Locator.btnChart), 3)
+				Mobile.tap(findByXPath(Locator.btnCheckout), 3)
+				Mobile.setText(findByXPath(Locator.txtFirstName), firstName, 1)
+				Mobile.setText(findByXPath(Locator.txtLastName), lastName, 1)
+				Mobile.setText(findByXPath(Locator.txtZip), postalCode, 1)
 				Mobile.hideKeyboard()
-				Mobile.tap(Helper.findByXPath(Locator.btnContinue), 3)
+				Mobile.tap(findByXPath(Locator.btnContinue), 3)
 				Mobile.scrollToText(Const.FINISH_BUTTON)
-				Mobile.tap(Helper.findByXPath(Locator.btnFinish), 3)
+				Mobile.tap(findByXPath(Locator.btnFinish), 3)
 			} else {
 				KeywordUtil.markFailed("Scenario ID ${scenarioId} not found in test data.")
 			}
@@ -98,9 +98,9 @@ public class LoginPageMobile {
 	}
 
 	@Keyword
-	public void checkoutCSV(String scenarioId) {
+	def public void checkoutCSV(String scenarioId, String data) {
 		try {
-			TestData testData = findTestData("csv/checkout")
+			TestData testData = findTestData(data)
 
 			if (testData == null) {
 				KeywordUtil.markFailed("Test data CSV tidak ditemukan.")
@@ -121,24 +121,24 @@ public class LoginPageMobile {
 
 				KeywordUtil.logInfo("Melakukan checkout dengan data: ${scenarioId}, ${firstName}, ${lastName}, ${postalCode}")
 
-				Mobile.tap(Helper.findByXPath(Locator.addToChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnCheckout), 3)
+				Mobile.tap(findByXPath(Locator.addToChart), 3)
+				Mobile.tap(findByXPath(Locator.btnChart), 3)
+				Mobile.tap(findByXPath(Locator.btnCheckout), 3)
 
-				Mobile.waitForElementPresent(Helper.findByXPath(Locator.txtFirstName), 5)
-				Mobile.setText(Helper.findByXPath(Locator.txtFirstName), firstName, 1)
+				Mobile.waitForElementPresent(findByXPath(Locator.txtFirstName), 5)
+				Mobile.setText(findByXPath(Locator.txtFirstName), firstName, 1)
 
-				Mobile.waitForElementPresent(Helper.findByXPath(Locator.txtLastName), 5)
-				Mobile.setText(Helper.findByXPath(Locator.txtLastName), lastName, 1)
+				Mobile.waitForElementPresent(findByXPath(Locator.txtLastName), 5)
+				Mobile.setText(findByXPath(Locator.txtLastName), lastName, 1)
 
-				Mobile.waitForElementPresent(Helper.findByXPath(Locator.txtZip), 5)
-				Mobile.setText(Helper.findByXPath(Locator.txtZip), postalCode, 1)
+				Mobile.waitForElementPresent(findByXPath(Locator.txtZip), 5)
+				Mobile.setText(findByXPath(Locator.txtZip), postalCode, 1)
 
 				Mobile.hideKeyboard()
-				Mobile.tap(Helper.findByXPath(Locator.btnContinue), 3)
+				Mobile.tap(findByXPath(Locator.btnContinue), 3)
 
 				Mobile.scrollToText(Const.FINISH_BUTTON)
-				Mobile.tap(Helper.findByXPath(Locator.btnFinish), 3)
+				Mobile.tap(findByXPath(Locator.btnFinish), 3)
 
 				KeywordUtil.logInfo("Checkout selesai untuk Scenario ID: ${scenarioId}")
 			} else {
@@ -150,7 +150,7 @@ public class LoginPageMobile {
 	}
 
 	@Keyword
-	public int findRowIndexCSV(TestData testData, String columnName, String searchValue) {
+	def public int findRowIndexCSV(TestData testData, String columnName, String searchValue) {
 		for (int i = 1; i <= testData.getRowNumbers(); i++) {
 			if (testData.getValue(columnName, i)?.equalsIgnoreCase(searchValue)) {
 				return i
@@ -160,10 +160,9 @@ public class LoginPageMobile {
 	}
 
 	@Keyword
-	public void checkoutJSON(String scenarioId) {
+	def public void checkoutJSON(String scenarioId, String pathJSON) {
 		try {
-			String jsonFilePath = "Data Files/json/checkout.json"
-			def jsonContent = new String(Files.readAllBytes(Paths.get(jsonFilePath)))
+			def jsonContent = new String(Files.readAllBytes(Paths.get(pathJSON)))
 			def jsonSlurper = new JsonSlurper().parseText(jsonContent)
 
 			def scenario = jsonSlurper.find { it.ScenarioId == scenarioId }
@@ -175,16 +174,16 @@ public class LoginPageMobile {
 
 				KeywordUtil.logInfo("Performing checkout with data: ${scenarioId}, ${firstName}, ${lastName}, ${postalCode}")
 
-				Mobile.tap(Helper.findByXPath(Locator.addToChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnChart), 3)
-				Mobile.tap(Helper.findByXPath(Locator.btnCheckout), 3)
-				Mobile.setText(Helper.findByXPath(Locator.txtFirstName), firstName, 1)
-				Mobile.setText(Helper.findByXPath(Locator.txtLastName), lastName, 1)
-				Mobile.setText(Helper.findByXPath(Locator.txtZip), postalCode, 1)
+				Mobile.tap(findByXPath(Locator.addToChart), 3)
+				Mobile.tap(findByXPath(Locator.btnChart), 3)
+				Mobile.tap(findByXPath(Locator.btnCheckout), 3)
+				Mobile.setText(findByXPath(Locator.txtFirstName), firstName, 1)
+				Mobile.setText(findByXPath(Locator.txtLastName), lastName, 1)
+				Mobile.setText(findByXPath(Locator.txtZip), postalCode, 1)
 				Mobile.hideKeyboard()
-				Mobile.tap(Helper.findByXPath(Locator.btnContinue), 3)
+				Mobile.tap(findByXPath(Locator.btnContinue), 3)
 				Mobile.scrollToText(Const.FINISH_BUTTON)
-				Mobile.tap(Helper.findByXPath(Locator.btnFinish), 3)
+				Mobile.tap(findByXPath(Locator.btnFinish), 3)
 			} else {
 				KeywordUtil.markFailed("Scenario ID ${scenarioId} not found in JSON data.")
 			}

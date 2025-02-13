@@ -34,4 +34,9 @@
       <initValue>'com.swaglabsmobileapp'</initValue>
       <name>AppPath</name>
    </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'https://jointemp.bankmandiri.co.id/app'</initValue>
+      <name>MandiriClickURL</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>

@@ -41,24 +41,9 @@ import java.util.regex.Matcher
 import internal.GlobalVariable
 
 public class GlobalHelper {
-	// Test Object Helper
-	@Keyword
-	static TestObject findByXPath(String xpath) {
-		if (!xpath?.trim()) {
-			KeywordUtil.logInfo("Invalid XPath: cannot be null or empty")
-			return null
-		}
-
-		TestObject dynamicObject = new TestObject()
-		dynamicObject.addProperty("xpath", ConditionType.EQUALS, xpath)
-
-
-		return dynamicObject
-	}
-
 	// Mobile Helper
 	@Keyword
-	static void openApp(String appId) {
+	def static void openApp(String appId) {
 		if (appId?.trim()) {
 			try {
 				Mobile.startExistingApplication(appId)
@@ -83,7 +68,7 @@ public class GlobalHelper {
 
 	// Web Helper
 	@Keyword
-	static void openBrowser(String url) {
+	def static void openBrowser(String url) {
 		try {
 			WebUI.openBrowser('')
 			WebUI.navigateToUrl(url)
@@ -94,7 +79,7 @@ public class GlobalHelper {
 	}
 
 	@Keyword
-	static void closeBrowser() {
+	def static void closeBrowser() {
 		try {
 			WebUI.closeBrowser()
 			KeywordUtil.logInfo("Browser closed successfully")
@@ -104,7 +89,7 @@ public class GlobalHelper {
 	}
 
 	@Keyword
-	static void selectDropdownOptionWeb(TestObject dropdown, String optionText) {
+	def static void selectDropdownOptionWeb(TestObject dropdown, String optionText) {
 		try {
 			WebUI.waitForElementVisible(dropdown, 10)
 			WebUI.selectOptionByLabel(dropdown, optionText, false)
@@ -116,7 +101,7 @@ public class GlobalHelper {
 
 	// Read File Helper
 	@Keyword
-	static Map LoadTestData(String scenarioId, String filePath, int dataStartIdx = 1) {
+	def static Map LoadTestData(String scenarioId, String filePath, int dataStartIdx = 1) {
 		def testData = [:]
 		testData["ScenarioId"] = scenarioId
 		testData["TestDataFilePath"] = filePath
@@ -137,7 +122,7 @@ public class GlobalHelper {
 	}
 
 	@Keyword
-	static Map readTestDataXLS(Map testData, int dataStartIdx) {
+	def static Map readTestDataXLS(Map testData, int dataStartIdx) {
 		def columns = []
 		def rows = []
 		testData["TestDataXLS"] = rows
@@ -187,7 +172,7 @@ public class GlobalHelper {
 	}
 
 	@Keyword
-	static Map LoadTestDataCSV(String scenarioId, String csvFileName) {
+	def static Map LoadTestDataCSV(String scenarioId, String csvFileName) {
 		String sourceUrl = GlobalVariable.DATA_LOCATION + csvFileName
 		CSVReader csv = new CSVReader(sourceUrl, CSVSeparator.COMMA, true)
 		List<List<String>> csvData = csv.getData()

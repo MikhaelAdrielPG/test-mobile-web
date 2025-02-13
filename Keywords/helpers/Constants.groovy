@@ -21,11 +21,19 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 import internal.GlobalVariable
 
 public class Constants {
-	def static final String TC001 = "TC_001"
-	def static final String TC002 = "TC_002"
-	def static final String S001 = "S_001"
-	def static final String S002 = "S_002"
-	def static final String S003 = "S_003"
-	def static final String S004 = "S_004"
-	def static final String FINISH_BUTTON = "FINISH"
+	public static final String TC001 = "TC_001"
+	public static final String TC002 = "TC_002"
+	public static final String S001 = "S_001"
+	public static final String S002 = "S_002"
+	public static final String S003 = "S_003"
+	public static final String S004 = "S_004"
+	public static final String FINISH_BUTTON = "FINISH"
+	public static final String SHEET1 = "Sheet1"
+	public static final String SHEET2 = "Sheet2"
+	public static final String WEB_TEST_DATA_PATH_XLS = "Data Files/xls/data.xlsx"
+	public static final String WEB_TEST_DATA_PATH_CSV = "csv/data"
+	public static final String WEB_TEST_DATA_PATH_JSON = "Data Files/json/data.json"
+	public static final String MOBILE_TEST_DATA_PATH_XLS = "Data Files/xls/data.xlsx"
+	public static final String MOBILE_TEST_DATA_PATH_CSV = "csv/checkout"
+	public static final String MOBILE_TEST_DATA_PATH_JSON = "Data Files/json/checkout.json"
 }

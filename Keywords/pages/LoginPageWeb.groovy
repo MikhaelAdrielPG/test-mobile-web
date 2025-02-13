@@ -26,21 +26,22 @@ import groovy.json.JsonSlurper
 import helpers.GlobalHelper as Helper
 import helpers.Constants as Const
 import locators.LoginPageWebLocator as Locator
+import helpers.GlobalHelper
 
 
 import internal.GlobalVariable
 
-public class LoginPageWeb {
+public class LoginPageWeb extends BasePage{
 	@Keyword
-	public void login(String username, String password) {
-		WebUI.setText(Helper.findByXPath(Locator.usernameInputXPath), username)
-		WebUI.setEncryptedText(Helper.findByXPath(Locator.passwordInputXPath), password)
-		WebUI.click(Helper.findByXPath(Locator.loginButtonXPath))
+	def public void login(String username, String password) {
+		WebUI.setText(findByXPath(Locator.usernameInputXPath), username)
+		WebUI.setEncryptedText(findByXPath(Locator.passwordInputXPath), password)
+		WebUI.click(findByXPath(Locator.loginButtonXPath))
 	}
 
 	@Keyword
-	public void verifyElementPresentByXPath(String xpath, int timeout) {
-		boolean isPresent = WebUI.verifyElementPresent(Helper.findByXPath(xpath), timeout)
+	def public void verifyElementPresentByXPath(String xpath, int timeout) {
+		boolean isPresent = WebUI.verifyElementPresent(findByXPath(xpath), timeout)
 
 		if (isPresent) {
 			KeywordUtil.logInfo("Element found: " + xpath)
@@ -50,21 +51,20 @@ public class LoginPageWeb {
 	}
 
 	@Keyword
-	public void verifyLoginSuccess() {
+	def public void verifyLoginSuccess() {
 		verifyElementPresentByXPath(Locator.dashboardXPath, 10)
 	}
 
 	@Keyword
-	public void navigateToAdminMenu() {
-		WebUI.waitForElementPresent(Helper.findByXPath(Locator.adminMenu), 10)
-		WebUI.click(Helper.findByXPath(Locator.adminMenu))
+	def public void navigateToAdminMenu() {
+		WebUI.waitForElementPresent(findByXPath(Locator.adminMenu), 10)
+		WebUI.click(findByXPath(Locator.adminMenu))
 	}
 
 	@Keyword
-	public void fillAdminForm(String scenarioId) {
+	def public void fillAdminFormXLS(String scenarioId, String testDataPath, String sheet) {
 		try {
-			def testDataPath = "Data Files/xls/data.xlsx"
-			ExcelData testData = ExcelFactory.getExcelDataWithDefaultSheet(testDataPath, "Sheet1", true)
+			ExcelData testData = ExcelFactory.getExcelDataWithDefaultSheet(testDataPath, sheet, true)
 
 			int rowIndex = -1
 			for (int i = 1; i <= testData.getRowNumbers(); i++) {
@@ -82,15 +82,11 @@ public class LoginPageWeb {
 
 				WebUI.comment("Filling form with data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
 
-				WebUI.setText(Helper.findByXPath(Locator.usernameField), username)
-
+				WebUI.setText(findByXPath(Locator.usernameField), username)
 				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
-
-				WebUI.setText(Helper.findByXPath(Locator.employeeNameField), employeeName)
-
+				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
 				selectDropdownOptionByText(Locator.statusDropdown, status)
-
-				WebUI.click(Helper.findByXPath(Locator.searchButton))
+				WebUI.click(findByXPath(Locator.searchButton))
 
 				WebUI.comment("Data from ${scenarioId} successfully filled into the form.")
 			} else {
@@ -101,10 +97,11 @@ public class LoginPageWeb {
 		}
 	}
 
+
 	@Keyword
-	public void fillAdminFormCSV(String scenarioId) {
+	def public void fillAdminFormCSV(String scenarioId, String testDataCSV) {
 		try {
-			TestData testData = findTestData("csv/data")
+			TestData testData = findTestData(testDataCSV)
 
 			if (testData == null) {
 				WebUI.comment("Test data CSV not found.")
@@ -127,17 +124,17 @@ public class LoginPageWeb {
 
 				WebUI.comment("Fill form with data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
 
-				WebUI.waitForElementPresent(Helper.findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(Helper.findByXPath(Locator.usernameField), username)
+				WebUI.waitForElementPresent(findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
+				WebUI.setText(findByXPath(Locator.usernameField), username)
 
 				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
 
-				WebUI.waitForElementPresent(Helper.findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(Helper.findByXPath(Locator.employeeNameField), employeeName)
+				WebUI.waitForElementPresent(findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
+				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
 
 				selectDropdownOptionByText(Locator.statusDropdown, status)
 
-				WebUI.click(Helper.findByXPath(Locator.searchButton))
+				WebUI.click(findByXPath(Locator.searchButton))
 
 				WebUI.comment("Data from ${scenarioId} succeed input to the form.")
 			} else {
@@ -149,7 +146,7 @@ public class LoginPageWeb {
 	}
 
 	@Keyword
-	public int findRowIndexCSV(TestData testData, String columnName, String searchValue) {
+	def public int findRowIndexCSV(TestData testData, String columnName, String searchValue) {
 		for (int i = 1; i <= testData.getRowNumbers(); i++) {
 			String cellValue = testData.getValue(columnName, i) ?: ""
 			if (cellValue.equals(searchValue)) {
@@ -160,9 +157,9 @@ public class LoginPageWeb {
 	}
 
 	@Keyword
-	public void fillAdminFormJSON(String scenarioId) {
+	def public void fillAdminFormJSON(String scenarioId, String filePath) {
 		try {
-			def jsonFilePath = "Data Files/json/data.json"
+			def jsonFilePath = filePath
 
 			File file = new File(jsonFilePath)
 			if (!file.exists()) {
@@ -187,17 +184,17 @@ public class LoginPageWeb {
 
 				WebUI.comment("Mengisi formulir dengan data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
 
-				WebUI.waitForElementPresent(Helper.findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(Helper.findByXPath(Locator.usernameField), username)
+				WebUI.waitForElementPresent(findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
+				WebUI.setText(findByXPath(Locator.usernameField), username)
 
 				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
 
-				WebUI.waitForElementPresent(Helper.findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(Helper.findByXPath(Locator.employeeNameField), employeeName)
+				WebUI.waitForElementPresent(findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
+				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
 
 				selectDropdownOptionByText(Locator.statusDropdown, status)
 
-				WebUI.click(Helper.findByXPath(Locator.searchButton))
+				WebUI.click(findByXPath(Locator.searchButton))
 
 				WebUI.comment("Data dari Scenario ID ${scenarioId} berhasil dimasukkan ke dalam formulir.")
 			} else {
@@ -208,13 +205,13 @@ public class LoginPageWeb {
 		}
 	}
 
-	private void selectDropdownOptionByText(String dropdownXPath, String value) {
-		WebUI.waitForElementPresent(Helper.findByXPath(dropdownXPath), 10)
-		WebUI.click(Helper.findByXPath(dropdownXPath))
+	def private void selectDropdownOptionByText(String dropdownXPath, String value) {
+		WebUI.waitForElementPresent(findByXPath(dropdownXPath), 10)
+		WebUI.click(findByXPath(dropdownXPath))
 
 		String optionXPath = "//div[@class='oxd-select-option' and span[text()='${value}']]";
 
-		WebUI.waitForElementPresent(Helper.findByXPath(optionXPath), 10)
-		WebUI.click(Helper.findByXPath(optionXPath))
+		WebUI.waitForElementPresent(findByXPath(optionXPath), 10)
+		WebUI.click(findByXPath(optionXPath))
 	}
 }
