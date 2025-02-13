@@ -32,7 +32,7 @@ loginPage.login(GlobalVariable.UsernameMobile, GlobalVariable.PasswordMobile)
 loginPage.verifyLoginSuccess()
 
 'Step 4 : Checkout'
-loginPage.checkoutJSON(Const.S002)
+loginPage.checkoutJSON(Const.S002, Const.MOBILE_TEST_DATA_PATH_JSON)
 
 'Step 4 : Close App'
 GlobalHelper.closeApp()
