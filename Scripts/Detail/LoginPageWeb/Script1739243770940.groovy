@@ -14,25 +14,48 @@ import com.kms.katalon.core.testobject.TestObject as TestObject
 import com.kms.katalon.core.webservice.keyword.WSBuiltInKeywords as WS
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
-import internal.GlobalVariable as GlobalVariable
+import internal.GlobalVariable
+
+import org.junit.After
 import org.openqa.selenium.Keys as Keys
-import helpers.GlobalHelper
-import pages.LoginPageMobile
+import helpers.GlobalHelper as Helper
+import helpers.Tars
+import pages.LoginPageWeb
 import helpers.Constants as Const
 
-LoginPageMobile loginPage = new LoginPageMobile()
+Tars tars = Tars.getInstance()
+LoginPageWeb loginPage = new LoginPageWeb()
 
-'Step 1: Open App'
-GlobalHelper.openApp(GlobalVariable.AppPath) 
+tars.createReport("LoginWeb", "TC-01")
 
-'Step 2: Login'
-loginPage.login(GlobalVariable.UsernameMobile, GlobalVariable.PasswordMobile)
+'Step 1: Open Browser and Navigate to App URL'
+Helper.openBrowser(GlobalVariable.AppUrl)
 
-'Step 3: Verify Login'
+'Step 2: Login using valid credentials'
+loginPage.login(GlobalVariable.UsernameWeb, GlobalVariable.PasswordWeb)
+
+'Step 3: Verify successful login'
 loginPage.verifyLoginSuccess()
 
-'Step 4 : Checkout'
-loginPage.checkoutJSON(Const.S002, Const.MOBILE_TEST_DATA_PATH_JSON)
+'Step 4: Navigate to Admin Page'
+loginPage.navigateToAdminMenu()
 
-'Step 4 : Close App'
-GlobalHelper.closeApp()
+'Step 5 : Input Username'
+loginPage.inputUsername(Username)
+
+'Step 6 : Select User Role'
+loginPage.selectUserRole(UserRole)
+
+'Step 7 : Input Employee Name'
+loginPage.inputEmployeeName(EmployeeName)
+
+'Step 8 : Select Status'
+loginPage.selectStatus(Status)
+
+'Step 9 : Click Search'
+loginPage.clickSearch()
+
+'Step 10 : Close Browser'
+Helper.closeBrowser()
+
+tars.saveReport()
