@@ -20,14 +20,42 @@ import com.kms.katalon.core.webservice.keyword.WSBuiltInKeywords as WS
 import com.kms.katalon.core.webui.keyword.WebUiBuiltInKeywords as WebUI
 import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 
+import helpers.Tars
+import helpers.TarsStatus
 import internal.GlobalVariable
 
 public class BasePage {
+
+	private Tars tars
+
+	BasePage() {
+		this.tars = Tars.getInstance()
+	}
+
+	protected errorHandling(Exception error) {
+		this.tars.screenshot("Failed", error.getMessage(), TarsStatus.FAILED)
+		this.tars.saveReportFailed()
+		WebUI.closeBrowser()
+		throw error
+	}
+
+	protected expectTrue(Boolean value) {
+		if (!value) {
+			throw new Exception("Assertion failed! Expected True, Actual False")
+		}
+	}
+
+	protected expectEqual(Object expected, Object actual) {
+		if (expected != actual) {
+			throw new AssertionError("Assertion failed! Expected: ${expected}, but got: ${actual}")
+		}
+	}
+
 	// Test Object Helper
 	@Keyword
 	def protected TestObject findByXPath(String xpath) {
 		if (!xpath?.trim()) {
-			KeywordUtil.logInfo("Invalid XPath: cannot be null or empty")
+			KeywordUtil.markError("Invalid XPath: cannot be null or empty")
 			return null
 		}
 

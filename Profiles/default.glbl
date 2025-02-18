@@ -39,4 +39,34 @@
       <initValue>'https://jointemp.bankmandiri.co.id/app'</initValue>
       <name>MandiriClickURL</name>
    </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'http://10.243.213.72:7000'</initValue>
+      <name>TarsUrl</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'Orange-Katalon'</initValue>
+      <name>ProjectName</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'Scripting'</initValue>
+      <name>ActivityName</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'Katalon'</initValue>
+      <name>ToolName</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'AUTOMATION_TEAM'</initValue>
+      <name>AuthorName</name>
+   </GlobalVariableEntity>
+   <GlobalVariableEntity>
+      <description></description>
+      <initValue>'http://localhost:7000'</initValue>
+      <name>TarsUrlLocal</name>
+   </GlobalVariableEntity>
 </GlobalVariableEntities>

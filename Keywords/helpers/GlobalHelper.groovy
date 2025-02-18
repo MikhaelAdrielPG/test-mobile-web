@@ -88,26 +88,17 @@ public class GlobalHelper {
 		}
 	}
 
-	@Keyword
-	def static void selectDropdownOptionWeb(TestObject dropdown, String optionText) {
-		try {
-			WebUI.waitForElementVisible(dropdown, 10)
-			WebUI.selectOptionByLabel(dropdown, optionText, false)
-			KeywordUtil.logInfo("Selected option: " + optionText)
-		} catch (Exception e) {
-			KeywordUtil.logInfo("Error selecting dropdown option: " + e.message)
-		}
-	}
-
 	// Read File Helper
 	@Keyword
 	def static Map LoadTestData(String scenarioId, String filePath, int dataStartIdx = 1) {
 		def testData = [:]
+
 		testData["ScenarioId"] = scenarioId
 		testData["TestDataFilePath"] = filePath
+
 		readTestDataXLS(testData, dataStartIdx)
 
-		if (testData.size() > 0) {
+		if(testData.size() > 0) {
 			testData["TestDataXLS"].each { rows ->
 				print "Loading Test Data --> "
 				rows.each { key, value ->
@@ -118,6 +109,7 @@ public class GlobalHelper {
 		} else {
 			println "No data loaded (or file/sheet not found) for Scenario: '$scenarioId' in File: '$filePath'"
 		}
+
 		return testData
 	}
 
@@ -190,5 +182,19 @@ public class GlobalHelper {
 		}
 		println testData
 		return testData
+	}
+
+	//Load first Test Data based on ScenarioId
+	def static Map getScenarioTestData(Map testData, String scenarioId, boolean markFailed = true) {
+		def testDataRow = testData["TestDataXLS"].find{ row -> row["ScenarioId"] == scenarioId }
+
+		if(testDataRow) {
+			return testDataRow
+		}else {
+			if(markFailed) {
+				KeywordUtil.markFailed("ExecutionController: loadTestData: 'ready-to-test' ScenarioTag are not found. Please check test data 'ScenarioId': $scenarioId")
+			}
+			return null
+		}
 	}
 }

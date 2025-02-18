@@ -12,10 +12,10 @@
    <rerunImmediately>true</rerunImmediately>
    <testSuiteGuid>48d659c3-114c-451e-9684-a8f139a886c4</testSuiteGuid>
    <testCaseLink>
-      <guid>9c464db0-6794-4d0f-8fa2-9fbf91a72684</guid>
+      <guid>1f565f5d-e3f6-46bf-93e6-6a1a8794819d</guid>
       <isReuseDriver>false</isReuseDriver>
       <isRun>true</isRun>
-      <testCaseId>Test Cases/LoginPageMobile</testCaseId>
+      <testCaseId>Test Cases/Scenario/LoginMobile</testCaseId>
       <usingDataBindingAtTestSuiteLevel>true</usingDataBindingAtTestSuiteLevel>
    </testCaseLink>
 </TestSuiteEntity>

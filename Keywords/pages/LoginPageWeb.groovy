@@ -24,6 +24,8 @@ import com.kms.katalon.core.windows.keyword.WindowsBuiltinKeywords as Windows
 
 import groovy.json.JsonSlurper
 import helpers.GlobalHelper as Helper
+import helpers.Tars
+import helpers.TarsStatus
 import helpers.Constants as Const
 import locators.LoginPageWebLocator as Locator
 import helpers.GlobalHelper
@@ -32,10 +34,20 @@ import helpers.GlobalHelper
 import internal.GlobalVariable
 
 public class LoginPageWeb extends BasePage{
+	// ini dilakukan di setiap page
+	private Tars tars;
+
+	public LoginPageWeb() {
+		this.tars = Tars.getInstance()
+	}
+
 	@Keyword
 	def public void login(String username, String password) {
 		WebUI.setText(findByXPath(Locator.usernameInputXPath), username)
 		WebUI.setEncryptedText(findByXPath(Locator.passwordInputXPath), password)
+
+		tars.screenshot("Login", "Login Success", TarsStatus.PASSED, 3)
+
 		WebUI.click(findByXPath(Locator.loginButtonXPath))
 	}
 
@@ -52,166 +64,48 @@ public class LoginPageWeb extends BasePage{
 
 	@Keyword
 	def public void verifyLoginSuccess() {
-		verifyElementPresentByXPath(Locator.dashboardXPath, 10)
+		verifyElementPresentByXPath(Locator.dashboardXPath, 3)
 	}
 
 	@Keyword
 	def public void navigateToAdminMenu() {
-		WebUI.waitForElementPresent(findByXPath(Locator.adminMenu), 10)
+		WebUI.waitForElementPresent(findByXPath(Locator.adminMenu), 3)
 		WebUI.click(findByXPath(Locator.adminMenu))
 	}
 
 	@Keyword
-	def public void fillAdminFormXLS(String scenarioId, String testDataPath, String sheet) {
-		try {
-			ExcelData testData = ExcelFactory.getExcelDataWithDefaultSheet(testDataPath, sheet, true)
-
-			int rowIndex = -1
-			for (int i = 1; i <= testData.getRowNumbers(); i++) {
-				if (testData.getValue("ScenarioId", i) == scenarioId) {
-					rowIndex = i
-					break
-				}
-			}
-
-			if (rowIndex != -1) {
-				String username = testData.getValue("Username", rowIndex)
-				String userRole = testData.getValue("UserRole", rowIndex)
-				String employeeName = testData.getValue("EmployeeName", rowIndex)
-				String status = testData.getValue("Status", rowIndex)
-
-				WebUI.comment("Filling form with data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
-
-				WebUI.setText(findByXPath(Locator.usernameField), username)
-				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
-				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
-				selectDropdownOptionByText(Locator.statusDropdown, status)
-				WebUI.click(findByXPath(Locator.searchButton))
-
-				WebUI.comment("Data from ${scenarioId} successfully filled into the form.")
-			} else {
-				WebUI.comment("Scenario ID ${scenarioId} not found in test data.")
-			}
-		} catch (Exception e) {
-			WebUI.comment("Test execution failed: " + e.message)
-		}
-	}
-
-
-	@Keyword
-	def public void fillAdminFormCSV(String scenarioId, String testDataCSV) {
-		try {
-			TestData testData = findTestData(testDataCSV)
-
-			if (testData == null) {
-				WebUI.comment("Test data CSV not found.")
-				return
-			}
-
-
-			int rowIndex = findRowIndexCSV(testData, "ScenarioId", scenarioId)
-
-			if (rowIndex != -1) {
-				String username = testData.getValue("Username", rowIndex) ?: ""
-				String userRole = testData.getValue("UserRole", rowIndex) ?: ""
-				String employeeName = testData.getValue("EmployeeName", rowIndex) ?: ""
-				String status = testData.getValue("Status", rowIndex) ?: ""
-
-				if (username.isEmpty() || userRole.isEmpty() || employeeName.isEmpty() || status.isEmpty()) {
-					WebUI.comment("Data not completed for scenarioId: ${scenarioId}")
-					return
-				}
-
-				WebUI.comment("Fill form with data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
-
-				WebUI.waitForElementPresent(findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(findByXPath(Locator.usernameField), username)
-
-				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
-
-				WebUI.waitForElementPresent(findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
-
-				selectDropdownOptionByText(Locator.statusDropdown, status)
-
-				WebUI.click(findByXPath(Locator.searchButton))
-
-				WebUI.comment("Data from ${scenarioId} succeed input to the form.")
-			} else {
-				WebUI.comment("Scenario ID ${scenarioId} not found in CSV file.")
-			}
-		} catch (Exception e) {
-			WebUI.comment("text execution failed: " + e.message)
-		}
+	def public void inputUsername(String username) {
+		WebUI.setText(findByXPath(Locator.usernameField), username)
 	}
 
 	@Keyword
-	def public int findRowIndexCSV(TestData testData, String columnName, String searchValue) {
-		for (int i = 1; i <= testData.getRowNumbers(); i++) {
-			String cellValue = testData.getValue(columnName, i) ?: ""
-			if (cellValue.equals(searchValue)) {
-				return i
-			}
-		}
-		return -1
+	def public void inputEmployeeName(String employeeName) {
+		WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
 	}
 
 	@Keyword
-	def public void fillAdminFormJSON(String scenarioId, String filePath) {
-		try {
-			def jsonFilePath = filePath
+	def public void selectUserRole(String userRole) {
+		selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
+	}
 
-			File file = new File(jsonFilePath)
-			if (!file.exists()) {
-				WebUI.comment("File JSON tidak ditemukan: ${jsonFilePath}")
-				return
-			}
+	@Keyword
+	def public void selectStatus(String status) {
+		selectDropdownOptionByText(Locator.statusDropdown, status)
+	}
 
-			def jsonContent = new JsonSlurper().parseText(file.text)
-
-			def scenarioData = jsonContent.find { it.ScenarioId == scenarioId }
-
-			if (scenarioData) {
-				String username = scenarioData.Username ?: ""
-				String userRole = scenarioData.UserRole ?: ""
-				String employeeName = scenarioData.EmployeeName ?: ""
-				String status = scenarioData.Status ?: ""
-
-				if (username.isEmpty() || userRole.isEmpty() || employeeName.isEmpty() || status.isEmpty()) {
-					WebUI.comment("Data tidak lengkap untuk Scenario ID: ${scenarioId}")
-					return
-				}
-
-				WebUI.comment("Mengisi formulir dengan data: ${scenarioId}, ${username}, ${userRole}, ${employeeName}, ${status}")
-
-				WebUI.waitForElementPresent(findByXPath(Locator.usernameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(findByXPath(Locator.usernameField), username)
-
-				selectDropdownOptionByText(Locator.userRoleDropdown, userRole)
-
-				WebUI.waitForElementPresent(findByXPath(Locator.employeeNameField), 10, FailureHandling.OPTIONAL)
-				WebUI.setText(findByXPath(Locator.employeeNameField), employeeName)
-
-				selectDropdownOptionByText(Locator.statusDropdown, status)
-
-				WebUI.click(findByXPath(Locator.searchButton))
-
-				WebUI.comment("Data dari Scenario ID ${scenarioId} berhasil dimasukkan ke dalam formulir.")
-			} else {
-				WebUI.comment("Scenario ID ${scenarioId} tidak ditemukan dalam file JSON.")
-			}
-		} catch (Exception e) {
-			WebUI.comment("Eksekusi gagal: " + e.message)
-		}
+	@Keyword
+	def public void clickSearch() {
+		WebUI.click(findByXPath(Locator.searchButton))
+		tars.screenshot("Search", "Search Success", TarsStatus.PASSED, 3)
 	}
 
 	def private void selectDropdownOptionByText(String dropdownXPath, String value) {
-		WebUI.waitForElementPresent(findByXPath(dropdownXPath), 10)
+		WebUI.waitForElementPresent(findByXPath(dropdownXPath), 3)
 		WebUI.click(findByXPath(dropdownXPath))
 
 		String optionXPath = "//div[@class='oxd-select-option' and span[text()='${value}']]";
 
-		WebUI.waitForElementPresent(findByXPath(optionXPath), 10)
+		WebUI.waitForElementPresent(findByXPath(optionXPath), 3)
 		WebUI.click(findByXPath(optionXPath))
 	}
 }
